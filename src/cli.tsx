@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { render, Text, Box, useInput, Spacer } from 'ink';
+import { render, Text, Box, useInput } from 'ink';
 import TextInput from 'ink-text-input';
 
-import { GameOfLife } from './game-of-life/Component';
+import { GameOfLife } from './game-of-life/Component.js';
 
 const UserControls: React.FC<{ onSize: (size: number) => void }> = ({ onSize }) => {
   const [input, setInput] = useState('');
@@ -14,10 +14,10 @@ const UserControls: React.FC<{ onSize: (size: number) => void }> = ({ onSize }) 
     }
   };
 
-  useInput((_, key) => {
+  useInput((input, key) => {
     if (key.return) {
       handleSubmit();
-    } else if (key.ctrl && key.input === 'c') {
+    } else if (key.ctrl && input === 'c') {
       process.exit(0);
     }
   });
@@ -30,13 +30,9 @@ const UserControls: React.FC<{ onSize: (size: number) => void }> = ({ onSize }) 
           value={input}
           onChange={setInput}
           onSubmit={handleSubmit}
-          validate={(value: string) => {
-            const num = Number(value.trim());
-            return !isNaN(num) && num >= 10 && num <= 50;
-          }}
         />
       </Box>
-      <Text color="gray" italic>Press Enter to submit, ctr-c to exit</Text>
+      <Text color="gray" italic>Press Enter to submit, Ctrl-C to quit</Text>
     </Box>
   );
 };

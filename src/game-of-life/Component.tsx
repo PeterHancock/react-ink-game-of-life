@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Text, Box, Newline } from 'ink';
+import { Text, Box } from 'ink';
 
-import { useGolGrid } from './hook';
+import { useGolGrid } from './hook.js';
 
 const displayGrid = (size: number, gridData: Uint8ClampedArray) => {
   const grid = [];

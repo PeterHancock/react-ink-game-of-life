@@ -1,16 +1,13 @@
 
 import { useState, useEffect } from 'react';
 
-import { createGrid, Transition, type GridCell } from '../grid';
+import { createGrid, Transition, type GridCell } from '../grid.js';
 
-const merge = (...cells: GridCell[]): [number, number, number, number] =>
+type GridCellLike = [number, number, number, number];
+
+const merge = (...cells: GridCell[]): GridCellLike =>
   cells.reduce(
-    (acc, c) => [
-      acc[0] + c[0],
-      acc[1] + c[1],
-      acc[2] + c[2],
-      acc[3] + c[3],
-    ],
+    (acc, c) => acc.map((_, i) => _ + c[i]) as GridCellLike,
     [0, 0, 0, 0],
   );
 
@@ -50,9 +47,9 @@ const createInitialGrid = (size: number) => {
     const present = Math.random() > 0.2 ? 1 : 0;
     initial[i] = present;
     if (present) {
-      initial[i + 1] = Math.floor(Math.random() * 256);
-      initial[i + 2] = Math.floor(Math.random() * 256);
-      initial[i + 3] = Math.floor(Math.random() * 256);
+      for (let j = 0; j < 3; j++) {
+        initial[i + 1 + j] = Math.floor(Math.random() * 256);
+      }
     }
   }
   return initial;
@@ -60,17 +57,16 @@ const createInitialGrid = (size: number) => {
 
 const update = createGrid(transition);
 
-export const useGolGrid = (size: number) => {
+export const useGolGrid = (size: number, frameRate: number = 1000 / 5) => {
   const [grid, setGrid] = useState<Uint8ClampedArray<ArrayBuffer>>(() => createInitialGrid(size));
 
   useEffect(() => {
     const grid = createInitialGrid(size);
     const updateGrid = update(size, size, grid);
     setGrid(grid);
-
     const timer = setInterval(() => {
       setGrid(updateGrid());
-    }, 1000 / 5);
+    }, frameRate);
 
     return () => {
       clearInterval(timer);
