@@ -1,11 +1,15 @@
-
-export type GridCell = Uint8ClampedArray;
+export type GridCell = Uint8ClampedArray<ArrayBuffer>;
 
 type Locality = [middle: GridCell, top: GridCell, right: GridCell, bottom: GridCell, left: GridCell];
 
-export const createGrid = (transition: (locality: Locality) => [number, number, number, number]) => (width: number, height: number, grid: Uint8ClampedArray) => {
+export type Transition = (Locality: Locality) => [number, number, number, number];
 
-  const buffer = new Uint8ClampedArray(new ArrayBuffer(width * height * 4));
+export const createGrid = (transition: Transition) =>
+  (width: number, height: number, initial: Uint8ClampedArray<ArrayBuffer>) => {
+
+  let current = initial;
+
+  let next = new Uint8ClampedArray(new ArrayBuffer(width * height * 4));
 
   const wrap = (i: number) => i === -1 ? width - 1 : i === width ? 0 : i;
 
@@ -13,7 +17,7 @@ export const createGrid = (transition: (locality: Locality) => [number, number, 
     const ii = i === -1 ? width - 1 : i === width ? 0 : i;
     const jj = j === -1 ? height - 1 : j === height ? 0 : j;
     const idx = (ii * width + wrap(jj)) * 4;
-    return grid.slice(idx, idx + 4);
+    return current.slice(idx, idx + 4);
   }
 
   const updateGrid = () => {
@@ -27,16 +31,18 @@ export const createGrid = (transition: (locality: Locality) => [number, number, 
           getPixelAt(i, j - 1),
         ];
         const idx = (i * width + j) * 4;
-        const next = transition(locality);
-        buffer[idx] = next[0];
-        buffer[idx + 1] = next[1];
-        buffer[idx + 2] = next[2];
-        buffer[idx + 3] = next[3];
+        const cell = transition(locality);
+        next[idx] = cell[0];
+        next[idx + 1] = cell[1];
+        next[idx + 2] = cell[2];
+        next[idx + 3] = cell[3];
       }
     }
-    grid.set(buffer);
+
+    [current, next] = [next, current];
+
+    return current;
   }
 
-  updateGrid();
-  return grid;
+  return updateGrid;
 }
