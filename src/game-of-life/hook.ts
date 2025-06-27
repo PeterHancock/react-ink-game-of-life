@@ -47,7 +47,7 @@ const createInitialGrid = (size: number) => {
   const initial = new Uint8ClampedArray(new ArrayBuffer(size * size * 4));
   initial.fill(0);
   for (let i = 0; i < size * size * 4; i += 4) {
-    const present = Math.random() > 0.5 ? 1 : 0;
+    const present = Math.random() > 0.2 ? 1 : 0;
     initial[i] = present;
     if (present) {
       initial[i + 1] = Math.floor(Math.random() * 256);
@@ -70,7 +70,7 @@ export const useGolGrid = (size: number) => {
 
     const timer = setInterval(() => {
       setGrid(updateGrid());
-    }, 1000 / 30);
+    }, 1000 / 5);
 
     return () => {
       clearInterval(timer);
