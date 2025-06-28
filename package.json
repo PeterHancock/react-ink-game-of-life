@@ -4,7 +4,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "tsx src/cli.tsx"
+    "start": "tsx src/cli.tsx",
+    "format": "prettier --write ."
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +18,7 @@
   "devDependencies": {
     "@types/node": "^24.0.4",
     "@types/react": "^19.1.8",
+    "prettier": "^3.6.2",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   }

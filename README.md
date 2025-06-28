@@ -4,7 +4,6 @@ This project demonstrates using [Ink](https://github.com/vadimdemedes/ink) to bu
 
 Game of Life was implemented to performance test multiple Text and Box components
 
-
 ```
      Game of Life
 
@@ -41,7 +40,7 @@ Game of Life was implemented to performance test multiple Text and Box component
 │■   ■ ■ ■ ■       ■ ■ ■   ■                         ■ ■ ■ ■│
 ╰───────────────────────────────────────────────────────────╯
 
-Enter grid size (10-50) ❯ 30 
+Enter grid size (10-50) ❯ 30
 Press Enter to submit, ctr-c to exit
 
 ```

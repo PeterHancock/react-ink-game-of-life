@@ -1,65 +1,79 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { render, Text, Box, useInput } from 'ink';
 import TextInput from 'ink-text-input';
 
 import { GameOfLife } from './game-of-life/Component.js';
 
-const UserControls: React.FC<{ onSize: (size: number) => void }> = ({ onSize }) => {
+const UserControls: React.FC<{
+  onSize: (size: number) => void;
+  focus: boolean;
+}> = ({ onSize, focus }) => {
   const [input, setInput] = useState('');
 
+  const handleChange = (value: string) => {
+    const sanitizedValue = value.trim().replace(/[^0-9\s]/g, '');
+    setInput(sanitizedValue);
+  };
+
   const handleSubmit = () => {
-    const size = Number(input.trim());
+    const size = Number(input);
     if (!isNaN(size) && size >= 10 && size <= 50) {
       onSize(size);
     }
   };
-
-  useInput((input, key) => {
-    if (key.return) {
+  useInput((_, key) => {
+    if (focus && key.return) {
       handleSubmit();
-    } else if (key.ctrl && input === 'c') {
-      process.exit(0);
     }
   });
 
   return (
     <Box flexDirection="column">
       <Box>
-        <Text color="yellow">Enter grid size (10-50) ❯ </Text>
+        <Text color={focus ? '#ffff00' : '#777700'}>
+          Enter grid size (10-50) ❯{' '}
+        </Text>
         <TextInput
+          focus={focus}
           value={input}
-          onChange={setInput}
+          onChange={handleChange}
           onSubmit={handleSubmit}
         />
       </Box>
-      <Text color="gray" italic>Press Enter to submit, Ctrl-C to quit</Text>
+      <Text color="gray" italic>
+        Press Enter to submit, Ctrl-C to quit
+      </Text>
     </Box>
   );
 };
 
-const Grid: React.FC<{ size: number | undefined }>	 = ({ size }) => {
-
-	if (!size ) {
-		return null
-	}
-
-	return <GameOfLife size={size} />;
-}
+const Grid: React.FC<{ size: number | undefined }> = ({ size }) => {
+  if (!size) {
+    return null;
+  }
+  return <GameOfLife size={size} />;
+};
 
 const CliApp = () => {
   const [size, setSize] = useState<number | undefined>();
+
+  useInput((input, key) => {
+    if (key.ctrl && input === 'c') {
+      return process.exit(0);
+    }
+  });
 
   return (
     <>
       <Box marginLeft={5} marginBottom={1}>
         <Text color="green">Game of Life</Text>
       </Box>
-     <Grid size={size} />
-     <Box marginTop={1}>
-      <UserControls onSize={setSize} />
+      <Grid size={size} />
+      <Box marginTop={1}>
+        <UserControls onSize={setSize} focus={true} />
       </Box>
     </>
   );
-}
+};
 
 render(<CliApp />);

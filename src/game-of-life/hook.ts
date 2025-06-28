@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 
 import { createGrid, Transition, type GridCell } from '../grid.js';
@@ -8,7 +7,7 @@ type GridCellLike = [number, number, number, number];
 const merge = (...cells: GridCell[]): GridCellLike =>
   cells.reduce(
     (acc, c) => acc.map((_, i) => _ + c[i]) as GridCellLike,
-    [0, 0, 0, 0],
+    [0, 0, 0, 0]
   );
 
 const transition: Transition = (locality) => {
@@ -16,7 +15,7 @@ const transition: Transition = (locality) => {
 
   const neigbourCount = merge(...neigbours)[0];
 
-  const occupiedNeighbours = neigbours.filter(_ => _[0]);
+  const occupiedNeighbours = neigbours.filter((_) => _[0]);
 
   const color = merge(...occupiedNeighbours)
     .map((v) => v / Math.ceil(occupiedNeighbours.length))
@@ -26,7 +25,7 @@ const transition: Transition = (locality) => {
 
   if (middle[0]) {
     if (neigbourCount < 1 || neigbourCount > 3) {
-      alive = 0
+      alive = 0;
     } else {
       alive = 1;
     }
@@ -53,12 +52,14 @@ const createInitialGrid = (size: number) => {
     }
   }
   return initial;
-}
+};
 
 const update = createGrid(transition);
 
 export const useGolGrid = (size: number, frameRate: number = 1000 / 5) => {
-  const [grid, setGrid] = useState<Uint8ClampedArray<ArrayBuffer>>(() => createInitialGrid(size));
+  const [grid, setGrid] = useState<Uint8ClampedArray<ArrayBuffer>>(() =>
+    createInitialGrid(size)
+  );
 
   useEffect(() => {
     const grid = createInitialGrid(size);
@@ -74,4 +75,4 @@ export const useGolGrid = (size: number, frameRate: number = 1000 / 5) => {
   }, [size]);
 
   return grid;
-}
+};
