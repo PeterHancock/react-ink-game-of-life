@@ -43,7 +43,7 @@ const createInitialGrid = (size: number) => {
   const initial = new Uint8ClampedArray(new ArrayBuffer(size * size * 4));
   initial.fill(0);
   for (let i = 0; i < size * size * 4; i += 4) {
-    const present = Math.random() > 0.2 ? 1 : 0;
+    const present = Math.random() > 0.1 ? 1 : 0;
     initial[i] = present;
     if (present) {
       for (let j = 0; j < 3; j++) {
@@ -56,7 +56,7 @@ const createInitialGrid = (size: number) => {
 
 const update = createGrid(transition);
 
-export const useGolGrid = (size: number, frameRate: number = 1000 / 5) => {
+export const useGolGrid = (size: number, frameRate: number = 1000 / 2 ) => {
   const [grid, setGrid] = useState<Uint8ClampedArray<ArrayBuffer>>(() =>
     createInitialGrid(size)
   );

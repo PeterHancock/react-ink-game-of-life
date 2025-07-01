@@ -64,12 +64,10 @@ Press Enter to submit, ctr-c to exit
 npm install
 ```
 
-### Development
-
-Run the app:
+### Run
 
 ```sh
-npx tsx src/cli.tsx
+npm start
 ```
 
 ## License

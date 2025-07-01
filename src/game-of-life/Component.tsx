@@ -41,16 +41,14 @@ export const GameOfLife: React.FC<{ size: number }> = ({ size }) => {
   }, [size]);
 
   return (
-    <>
-      <Box alignItems="center">
-        <Box flexDirection="column" borderStyle="round" borderColor="green">
-          {displayGrid(size, grid)}
-        </Box>
-        <Box padding={2}>
-          <Text color="gray">Generation </Text>
-          <Text color="green">{count}</Text>
-        </Box>
+    <Box alignItems="center">
+      <Box flexDirection="column" borderStyle="round" borderColor="green">
+        {displayGrid(size, grid)}
       </Box>
-    </>
+      <Box padding={2}>
+        <Text color="gray">Generation </Text>
+        <Text color="green">{count}</Text>
+      </Box>
+    </Box>
   );
 };

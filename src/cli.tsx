@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { render, Text, Box, useInput } from 'ink';
 import TextInput from 'ink-text-input';
 
@@ -37,7 +37,6 @@ const UserControls: React.FC<{
           focus={focus}
           value={input}
           onChange={handleChange}
-          onSubmit={handleSubmit}
         />
       </Box>
       <Text color="gray" italic>
